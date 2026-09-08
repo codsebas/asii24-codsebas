@@ -1,0 +1,96 @@
+@startuml layers-architecture
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam packageStyle rectangle
+skinparam roundCorner 8
+
+title Arquitectura en 4 Capas y Flujo MVC - ASII-24 Semana 4
+
+package "Capa Presentation" #E8F4FD {
+    class DocumentController {
+        + publish(payload: array): array
+        + get(id: string, role: string): array
+        + listByRole(role: string): array
+    }
+}
+
+package "Capa Application" #EAF7ED {
+    class PublishDocument {
+        + execute(input: PublishDocumentInput): DocumentData
+    }
+    class GetDocumentById {
+        + execute(id: string, role: string): DocumentData
+    }
+    class ListDocumentsByRole {
+        + execute(role: string): list<DocumentData>
+    }
+    interface DocumentRepository <<interface>> {
+        + save(document: Document): void
+        + findById(id: string): Document
+        + existsCode(code: string): bool
+        + findByRole(role: string): list<Document>
+    }
+}
+
+package "Capa Domain" #FFF9E6 {
+    class Document <<Entity>> {
+        - id: string
+        - code: string
+        - title: string
+        - summary: string
+        - content: string
+        - ownerScope: OwnerScope
+        - hospitalUuid: ?string
+        - authorizedRoles: list<string>
+        - status: string
+        - publishedAt: DateTimeImmutable
+        + isAccessibleBy(role: string): bool
+    }
+    enum OwnerScope <<Enum>> {
+        CENTRAL
+        HOSPITAL
+    }
+}
+
+package "Capa Infrastructure" #FBEAEB {
+    class InMemoryDocumentRepository implements DocumentRepository {
+        - storage: array
+        + save(document: Document): void
+        + findById(id: string): Document
+        + existsCode(code: string): bool
+        + findByRole(role: string): list<Document>
+    }
+    class PdoDocumentRepository implements DocumentRepository {
+        - pdo: PDO
+        + save(document: Document): void
+        + findById(id: string): Document
+        + existsCode(code: string): bool
+        + findByRole(role: string): list<Document>
+    }
+}
+
+DocumentController --> PublishDocument : Invoca
+DocumentController --> GetDocumentById : Invoca
+DocumentController --> ListDocumentsByRole : Invoca
+
+PublishDocument --> DocumentRepository : Usa interfaz
+GetDocumentById --> DocumentRepository : Usa interfaz
+ListDocumentsByRole --> DocumentRepository : Usa interfaz
+
+PublishDocument ..> Document : Crea entidad
+Document *-- OwnerScope
+
+note right of DocumentController
+  Controlador Delgado (Thin Controller):
+  - NO contiene SQL
+  - NO contiene reglas de negocio
+  - Retorna codigos HTTP estandar (201, 200, 403, 404, 409, 422)
+end note
+
+note bottom of DocumentRepository
+  Principio de Inversion de Dependencias (DIP):
+  La aplicacion depende de la abstraccion,
+  los adaptadores de persistencia implementan el contrato.
+end note
+
+@enduml

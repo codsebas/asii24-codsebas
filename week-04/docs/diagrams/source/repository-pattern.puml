@@ -1,0 +1,56 @@
+@startuml repository-pattern
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam roundCorner 8
+
+title Patron Repository y Adaptadores - ASII-24 Semana 4
+
+interface DocumentRepository <<Interface>> {
+    + save(document: Document): void
+    + findById(id: string): ?Document
+    + existsCode(code: string): bool
+    + findByRole(role: string): list<Document>
+}
+
+class InMemoryDocumentRepository {
+    - storage: array<string, Document>
+    + save(document: Document): void
+    + findById(id: string): ?Document
+    + existsCode(code: string): bool
+    + findByRole(role: string): list<Document>
+    + count(): int
+}
+
+class PdoDocumentRepository {
+    - pdo: PDO
+    + save(document: Document): void
+    + findById(id: string): ?Document
+    + existsCode(code: string): bool
+    + findByRole(role: string): list<Document>
+    - mapRowToEntity(row: array): Document
+}
+
+DocumentRepository <|.. InMemoryDocumentRepository : implementa (Test Double)
+DocumentRepository <|.. PdoDocumentRepository : implementa (Produccion/Integracion)
+
+class ClientService <<Application Service>> {
+    - repository: DocumentRepository
+    + __construct(repository: DocumentRepository)
+}
+
+ClientService --> DocumentRepository : inyeccion de dependencias
+
+note left of InMemoryDocumentRepository
+  Adaptador rapido para tests unitarios:
+  - Sin dependencias de I/O de red o disco
+  - Permite pruebas deterministicas en memoria
+end note
+
+note right of PdoDocumentRepository
+  Adaptador de persistencia relacional:
+  - Sentencias preparadas (Prepared Statements)
+  - Control de transacciones atimicas (ACID)
+  - Desacoplado del motor SQL especifico
+end note
+
+@enduml

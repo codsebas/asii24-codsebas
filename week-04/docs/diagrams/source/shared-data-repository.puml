@@ -1,0 +1,49 @@
+@startuml shared-data-repository
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam roundCorner 8
+
+title Integracion con Repositorio de Datos Compartido - ASII-24 Semana 4
+
+actor "Usuario Clinico / Admin" as User
+participant "Modulo ASII-24\nCentro Documental" as Mod24
+boundary "DocumentRepository\nBoundary" as RepoBoundary
+database "Repositorio Local\n(HOSPITAL SQLite/PostgreSQL)" as LocalDB
+database "Repositorio Compartido\n(CENTRAL SHI PostgreSQL)" as CentralDB
+control "Servicio de Sincronizacion\nFederada / Replicacion" as SyncService
+
+User -> Mod24 : 1. Publicar / Consultar documento
+activate Mod24
+
+Mod24 -> RepoBoundary : 2. invoke save() / findById()
+activate RepoBoundary
+
+alt Alcance LOCAL (HOSPITAL)
+    RepoBoundary -> LocalDB : 3a. Persistir / Consultar documento local
+    LocalDB --> RepoBoundary : Confirmacion local
+else Alcance COMPARTIDO (CENTRAL)
+    RepoBoundary -> CentralDB : 3b. Persistir metadatos centrales (sin FK remota)
+    CentralDB --> RepoBoundary : Confirmacion central
+end
+
+RepoBoundary --> Mod24 : Resultado de persistencia
+deactivate RepoBoundary
+
+Mod24 --> User : Respuesta HTTP (201 / 200)
+deactivate Mod24
+
+== Proceso Asincrono de Integracion Federada ==
+
+SyncService -> CentralDB : 4. Consultar nuevos contratos/manuales globales
+CentralDB --> SyncService : Lista de manuales normativos
+SyncService -> LocalDB : 5. Replicar catalogo documental autorizado para hospital
+LocalDB --> SyncService : Catalogo actualizado
+
+note over LocalDB, CentralDB
+  Regla de Aislamiento Federado:
+  - NO existen Foreign Keys remotas directas entre HOSPITAL y CENTRAL.
+  - La referencia se realiza mediante identificadores logicos UUID.
+  - Tolerancia a desconexion: el hospital opera de forma autonoma.
+end note
+
+@enduml
