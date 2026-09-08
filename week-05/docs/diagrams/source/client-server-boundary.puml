@@ -1,0 +1,54 @@
+@startuml client-server-boundary
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam roundCorner 8
+
+title Arquitectura Cliente-Servidor y Frontera de Microservicio - ASII-24 Semana 5
+
+package "Capa Clientes (Consumidores)" #EBF3FB {
+    component [Portal Web SHI\n(SPA Vue/React/Blade)] as WebClient
+    component [App Movil Personal Clinico\n(Android / iOS)] as MobileClient
+    component [Sistemas Externos / Postman] as PostmanClient
+}
+
+package "Puerta de Enlace / API Gateway" #F3E5F5 {
+    component [Reverse Proxy / Gateway] as Gateway
+    note right of Gateway
+      - Terminacion TLS/HTTPS
+      - Validacion X-Tenant-ID obligatorio
+      - Enrutamiento de peticiones
+    end note
+}
+
+package "Frontera Logica del Modulo ASII-24" #E8F5E9 {
+    component [API Rest Controller\n/api/v1/api-contracts] as ApiController
+    component [Servicio de Autenticacion JWT\n(Middleware Auth)] as JwtAuth
+    component [Capa de Aplicacion ASII-24\n(Casos de Uso)] as AppService
+    component [Dominio y Validacion OpenAPI] as DomainCore
+    interface "ApiContractRepository" as RepoPort
+    component [Adaptador PostgreSQL / SQLite] as RepoAdapter
+}
+
+database "Persistencia Central ASII-24\n(PostgreSQL / JSONB)" as Database
+
+WebClient --> Gateway : HTTPS / JSON
+MobileClient --> Gateway : HTTPS / JSON
+PostmanClient --> Gateway : HTTPS / JSON
+
+Gateway --> JwtAuth : Valida Bearer Token
+JwtAuth --> ApiController : Peticion Autenticada
+
+ApiController --> AppService : DTOs de Entrada
+AppService --> DomainCore : Validacion de Reglas
+AppService --> RepoPort : Persistir / Consultar
+RepoPort <|.. RepoAdapter : Implementa
+RepoAdapter --> Database : SQL / Prepared Statements
+
+note bottom of DomainCore
+  Frontera Autonoma:
+  - Validacion estructural OpenAPI
+  - Calculo de Checksum SHA-256
+  - Inmutabilidad de versiones
+end note
+
+@enduml

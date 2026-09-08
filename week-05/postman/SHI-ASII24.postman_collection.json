@@ -1,0 +1,211 @@
+{
+  "info": {
+    "name": "SHI ASII-24 Contract Verification",
+    "_postman_id": "c2f3a0ef-8a41-4a4c-8d71-7be86b5c1e24",
+    "description": "Postman collection aligned with the ASII-24 OpenAPI contract.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Publish contract - success",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-Tenant-ID", "value": "{{tenantId}}", "type": "text" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"module_code\": \"MOD24\",\n  \"version\": \"1.0.0\",\n  \"owner_scope\": \"CENTRAL\",\n  \"specification\": {\n    \"openapi\": \"3.0.3\",\n    \"info\": {\n      \"title\": \"ASII-24\",\n      \"version\": \"1.0.0\"\n    },\n    \"paths\": {\n      \"/api/v1/api-contracts\": {\n        \"post\": {\n          \"responses\": {\n            \"201\": {\n              \"description\": \"Created\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/api-contracts",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "api-contracts"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 201', function () { pm.response.to.have.status(201); });",
+              "pm.environment.set('contractId', pm.response.json().data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Publish contract - invalid payload",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-Tenant-ID", "value": "{{tenantId}}", "type": "text" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"module_code\": \"MOD24\",\n  \"version\": \"1.0.0\",\n  \"owner_scope\": \"CENTRAL\",\n  \"specification\": {\n    \"openapi\": \"3.0.3\",\n    \"info\": {\n      \"title\": \"ASII-24\",\n      \"version\": \"1.0.0\"\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/api-contracts",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "api-contracts"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status is 422', function () { pm.response.to.have.status(422); });"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Publish contract - missing tenant",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"module_code\": \"MOD24\",\n  \"version\": \"1.0.0\",\n  \"owner_scope\": \"CENTRAL\",\n  \"specification\": {\n    \"openapi\": \"3.0.3\",\n    \"info\": {\n      \"title\": \"ASII-24\",\n      \"version\": \"1.0.0\"\n    },\n    \"paths\": {\n      \"/api/v1/api-contracts\": {\n        \"post\": {\n          \"responses\": {\n            \"201\": {\n              \"description\": \"Created\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/api-contracts",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "api-contracts"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status is 400', function () { pm.response.to.have.status(400); });"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Publish contract - unauthorized",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-Tenant-ID", "value": "{{tenantId}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"module_code\": \"MOD24\",\n  \"version\": \"1.0.0\",\n  \"owner_scope\": \"CENTRAL\",\n  \"specification\": {\n    \"openapi\": \"3.0.3\",\n    \"info\": {\n      \"title\": \"ASII-24\",\n      \"version\": \"1.0.0\"\n    },\n    \"paths\": {\n      \"/api/v1/api-contracts\": {\n        \"post\": {\n          \"responses\": {\n            \"201\": {\n              \"description\": \"Created\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/api-contracts",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "api-contracts"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status is 401', function () { pm.response.to.have.status(401); });"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Publish contract - duplicate version",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-Tenant-ID", "value": "{{tenantId}}", "type": "text" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"module_code\": \"MOD24\",\n  \"version\": \"1.0.0\",\n  \"owner_scope\": \"CENTRAL\",\n  \"specification\": {\n    \"openapi\": \"3.0.3\",\n    \"info\": {\n      \"title\": \"ASII-24\",\n      \"version\": \"1.0.0\"\n    },\n    \"paths\": {\n      \"/api/v1/api-contracts\": {\n        \"post\": {\n          \"responses\": {\n            \"201\": {\n              \"description\": \"Created\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/api-contracts",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "api-contracts"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status is 409', function () { pm.response.to.have.status(409); });"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get contract - success",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Tenant-ID", "value": "{{tenantId}}", "type": "text" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/api-contracts/{{contractId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "api-contracts", "{{contractId}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status is 200', function () { pm.response.to.have.status(200); });"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get contract - missing contract",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Tenant-ID", "value": "{{tenantId}}", "type": "text" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}", "type": "text" },
+          { "key": "Accept", "value": "application/json", "type": "text" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/api-contracts/99999999-9999-9999-9999-999999999999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "api-contracts", "99999999-9999-9999-9999-999999999999"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status is 404', function () { pm.response.to.have.status(404); });"]
+          }
+        }
+      ]
+    }
+  ]
+}

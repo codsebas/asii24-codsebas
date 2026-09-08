@@ -1,0 +1,57 @@
+@startuml rest-security-sequence
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam roundCorner 8
+
+title Secuencia de Seguridad REST: Tenant y Bearer JWT - ASII-24 Semana 5
+
+actor "Cliente / Postman" as Client
+participant "TenantMiddleware" as TenantMid
+participant "JwtAuthMiddleware" as JwtMid
+participant "ApiContractController" as Controller
+participant "PublishApiContract" as UseCase
+database "PostgreSQL DB" as DB
+
+Client -> TenantMid : POST /api/v1/api-contracts\n(Sin Header X-Tenant-ID)
+activate TenantMid
+TenantMid --> Client : HTTP 400 Bad Request\n{"error": "TENANT_HEADER_REQUIRED"}
+deactivate TenantMid
+
+== Flujo con Tenant pero sin Token JWT ==
+
+Client -> TenantMid : POST /api/v1/api-contracts\n[X-Tenant-ID: tenant-gt-01]
+activate TenantMid
+TenantMid -> JwtMid : Forward request
+activate JwtMid
+JwtMid --> Client : HTTP 401 Unauthorized\n{"error": "TOKEN_INVALID_OR_MISSING"}
+deactivate JwtMid
+deactivate TenantMid
+
+== Flujo Completo Exitoso (Autenticado y Autorizado) ==
+
+Client -> TenantMid : POST /api/v1/api-contracts\n[X-Tenant-ID: tenant-gt-01]\n[Authorization: Bearer <jwt_token>]\nPayload: {id, module_code, version, specification}
+activate TenantMid
+
+TenantMid -> JwtMid : Tenant verificado
+activate JwtMid
+
+JwtMid -> Controller : Token validado (User: Admin)
+activate Controller
+
+Controller -> UseCase : execute(PublishApiContractInput)
+activate UseCase
+
+UseCase -> DB : Verificar duplicado & INSERT api_contracts
+activate DB
+DB --> UseCase : Persistencia confirmada
+deactivate DB
+
+UseCase --> Controller : ApiContractData (Checksum SHA-256)
+deactivate UseCase
+
+Controller --> Client : HTTP 201 Created\n{"success": true, "data": {...}}
+deactivate Controller
+deactivate JwtMid
+deactivate TenantMid
+
+@enduml

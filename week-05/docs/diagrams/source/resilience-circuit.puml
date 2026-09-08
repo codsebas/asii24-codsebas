@@ -1,0 +1,47 @@
+@startuml resilience-circuit
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam roundCorner 8
+
+title Estrategia de Resiliencia y Consistencia ante Fallas Parciales - ASII-24 Semana 5
+
+package "Cliente Local (Hospital)" {
+    component [Servicio Clinico Local] as LocalClient
+    component [Cache Documental Local\n(TTL / Fallback)] as LocalCache
+}
+
+package "Red Distribuida SHI" {
+    interface "Canal WAN / VPN" as WAN
+}
+
+package "Servicio Central ASII-24" {
+    component [API Contract Registry] as CentralRegistry
+    database [PostgreSQL Central] as CentralDB
+}
+
+LocalClient -> LocalCache : 1. Consultar Contrato/Manual
+alt Cache Hit (Manual disponible)
+    LocalCache --> LocalClient : Retornar copia local
+else Cache Miss o Verificacion de Version
+    LocalClient -> WAN : 2. GET /api/v1/api-contracts/{id}
+    alt Conectividad Estable
+        WAN -> CentralRegistry : Peticion HTTP
+        CentralRegistry -> CentralDB : SELECT contract
+        CentralDB --> CentralRegistry : Data
+        CentralRegistry --> WAN : HTTP 200 OK
+        WAN --> LocalClient : Contrato Actualizado
+        LocalClient -> LocalCache : Actualizar cache
+    else Caida de Red WAN (Timeout / Desconexion)
+        WAN --x CentralRegistry : Falla de enlace
+        WAN --> LocalClient : Error de conexion / Fallback
+        LocalClient -> LocalCache : 3. Activar Modo Degradado (Leer cache previo)
+        LocalCache --> LocalClient : Retornar ultima version conocida
+        note right of LocalCache
+          Principio de Autonomia Clinica:
+          La atencion medica no se detiene
+          por desconexion con el repositorio central.
+        end note
+    end
+end
+
+@enduml

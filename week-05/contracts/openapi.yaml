@@ -1,0 +1,301 @@
+openapi: 3.0.3
+info:
+  title: ASII-24 API Contract Registry
+  version: 1.0.0
+  description: |
+    Contrato OpenAPI para el modulo ASII-24. Publica y consulta metadatos tecnicos
+    de contratos API con tenant y JWT.
+servers:
+  - url: http://127.0.0.1:8000
+    description: Local development
+tags:
+  - name: ApiContracts
+    description: Registry for ASII-24 technical API contracts
+paths:
+  /api/v1/api-contracts:
+    post:
+      tags: [ApiContracts]
+      summary: Publish an API contract
+      operationId: publishApiContract
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiContractPublishRequest'
+            examples:
+              centralContract:
+                summary: Central contract publication
+                value:
+                  id: 11111111-1111-1111-1111-111111111111
+                  module_code: MOD24
+                  version: 1.0.0
+                  owner_scope: CENTRAL
+                  specification:
+                    openapi: 3.0.3
+                    info:
+                      title: ASII-24
+                      version: 1.0.0
+                    paths:
+                      /api/v1/api-contracts:
+                        post:
+                          responses:
+                            '201':
+                              description: Created
+      responses:
+        '201':
+          description: Contract published successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContractResponse'
+              examples:
+                success:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      module_code: MOD24
+                      version: 1.0.0
+                      owner_scope: CENTRAL
+                      hospital_uuid: null
+                      checksum: 6f3c4f8fd4b42c0d8f38c1f3d71d8c2b1a2a0c0eaa6b6eb1c4e8d5e7c2a0f111
+                      status: PUBLISHED
+                      published_at: '2026-08-21T10:00:00+00:00'
+        '400':
+          description: Missing tenant header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingTenant:
+                  value:
+                    message: La cabecera X-Tenant-ID es obligatoria.
+        '401':
+          description: Unauthorized or invalid JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                unauthorized:
+                  value:
+                    message: Token inválido o expirado.
+        '409':
+          description: Duplicate contract version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                duplicateVersion:
+                  value:
+                    message: The contract version is already published.
+        '422':
+          description: Invalid payload or OpenAPI structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+              examples:
+                invalidPayload:
+                  value:
+                    message: The given data was invalid.
+                    errors:
+                      specification.paths:
+                        - The specification.paths field is required.
+  /api/v1/api-contracts/{id}:
+    get:
+      tags: [ApiContracts]
+      summary: Retrieve a published API contract
+      operationId: getApiContract
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 11111111-1111-1111-1111-111111111111
+      responses:
+        '200':
+          description: Contract found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContractResponse'
+              examples:
+                success:
+                  value:
+                    data:
+                      id: 11111111-1111-1111-1111-111111111111
+                      module_code: MOD24
+                      version: 1.0.0
+                      owner_scope: CENTRAL
+                      hospital_uuid: null
+                      checksum: 6f3c4f8fd4b42c0d8f38c1f3d71d8c2b1a2a0c0eaa6b6eb1c4e8d5e7c2a0f111
+                      status: PUBLISHED
+                      published_at: '2026-08-21T10:00:00+00:00'
+        '400':
+          description: Missing tenant header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingTenant:
+                  value:
+                    message: La cabecera X-Tenant-ID es obligatoria.
+        '401':
+          description: Unauthorized or invalid JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                unauthorized:
+                  value:
+                    message: Token inválido o expirado.
+        '404':
+          description: Contract not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notFound:
+                  value:
+                    message: The contract was not found.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    TenantId:
+      name: X-Tenant-ID
+      in: header
+      required: true
+      description: Active tenant identifier
+      schema:
+        type: string
+        format: uuid
+      example: 11111111-1111-1111-1111-111111111111
+  schemas:
+    ApiContractPublishRequest:
+      type: object
+      required:
+        - id
+        - module_code
+        - version
+        - owner_scope
+        - specification
+      properties:
+        id:
+          type: string
+          format: uuid
+        module_code:
+          type: string
+          maxLength: 64
+          example: MOD24
+        version:
+          type: string
+          maxLength: 32
+          example: 1.0.0
+        owner_scope:
+          type: string
+          enum: [CENTRAL, HOSPITAL]
+        hospital_uuid:
+          type: string
+          format: uuid
+          nullable: true
+        specification:
+          $ref: '#/components/schemas/OpenApiDocument'
+    OpenApiDocument:
+      type: object
+      required:
+        - openapi
+        - info
+        - paths
+      properties:
+        openapi:
+          type: string
+          example: 3.0.3
+        info:
+          type: object
+          required: [title, version]
+          properties:
+            title:
+              type: string
+              example: ASII-24
+            version:
+              type: string
+              example: 1.0.0
+        paths:
+          type: object
+          additionalProperties:
+            type: object
+    ApiContractResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          required:
+            - id
+            - module_code
+            - version
+            - owner_scope
+            - checksum
+            - status
+            - published_at
+          properties:
+            id:
+              type: string
+              format: uuid
+            module_code:
+              type: string
+            version:
+              type: string
+            owner_scope:
+              type: string
+              enum: [CENTRAL, HOSPITAL]
+            hospital_uuid:
+              type: string
+              format: uuid
+              nullable: true
+            checksum:
+              type: string
+              pattern: '^[a-f0-9]{64}$'
+            status:
+              type: string
+              example: PUBLISHED
+            published_at:
+              type: string
+              format: date-time
+    ErrorResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+    ValidationErrorResponse:
+      type: object
+      required: [message, errors]
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
