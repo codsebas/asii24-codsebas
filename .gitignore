@@ -1,0 +1,5 @@
+.idea/
+*.sqlite
+*.sqlite-journal
+*.db
+.phpunit.result.cache
