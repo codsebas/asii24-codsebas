@@ -74,9 +74,23 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 | :---: | :--- | :--- | :---: |
 | **Semana 1** | Modelado de Negocio y UML | Casos de uso (`UC-01` a `UC-10`), Diagramas de Actividad y Secuencia, Trazabilidad. | ✅ **Completo** (Mergeado PR #38 en SHI) |
 | **Semana 2** | Principios SOLID y Requerimientos | `RF-01` a `RF-10`, `RNF-01` a `RNF-08`, Criterios Dado/Cuando/Entonces, SOLID DIP. | ✅ **Completo** (Mergeado PR #46 en SHI) |
-| **Semana 3** | Arquitectura y Micro-Monolito Vanilla | Micro-HIS en PHP 8.2+ vanilla, 4 capas, PDO con sentencias preparadas, tests. | ✅ **Completo** |
-| **Semana 4** | Arquitectura en Capas y Patrón Repository | MVC con controlador delgado, interfaz `DocumentRepository`, adaptadores InMemory y PDO, análisis de repositorio compartido. | ✅ **Completo** (9/9 tests pasando) |
+| **Semana 3** | Arquitectura y Micro-Monolito Vanilla | Micro-HIS en PHP 8.2+ vanilla, 4 capas, PDO con sentencias preparadas, tests. | ✅ **Completo** (Mergeado PR #72 en SHI - 6/6 tests) |
+| **Semana 4** | Arquitectura en Capas y Patrón Repository | MVC con controlador delgado, interfaz `DocumentRepository`, adaptadores InMemory y PDO, análisis de repositorio compartido. | ✅ **Completo** (Integrado vía PR #73 en SHI - 9/9 tests) |
 | **Semana 5** | Cliente-Servidor, API REST y Contratos | Contrato OpenAPI 3.0, colección Postman automatizada, ADR frontera de microservicio, seguridad JWT y Tenant. | ✅ **Completo** (6/6 tests pasando) |
+
+---
+
+## Trazabilidad e Integración con Repositorio Grupal (SHI)
+
+Todas las entregas individuales se integran progresivamente al repositorio grupal ([`sistema-hospitalario-integrado-SistenasII-2026`](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026)) hacia la rama `develop` mediante Pull Requests aislados por semana creados desde ramas worktree dedicadas:
+
+| Semana | Rama Worktree Grupal | Pull Request SHI | Estado de Integración |
+| :---: | :--- | :---: | :---: |
+| **Semana 1** | `feature/asii-24-contratos-api-openapi-postman-y-documentac-codsebas` | [PR #38](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/38) | 🟢 **MERGED** (`develop`) |
+| **Semana 2** | `feature/asii-24-contratos-api-openapi-postman-y-documentac-codsebas` | [PR #46](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/46) | 🟢 **MERGED** (`develop`) |
+| **Semana 3** | `feature/asii-24-semana-03-micro-his-codsebas` | [PR #72](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/72) | 🟢 **MERGED** (`develop`) |
+| **Semana 4** | `feature/asii-24-semana-04-mvc-repository-codsebas` | [PR #73](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/73) | 🟡 **ABIERTO / EN MERGE** (`develop`) |
+| **Semana 5** | `feature/asii-24-semana-05-openapi-postman-codsebas` | *Pendiente post-merge PR #73* | ⏳ Preparado localmente |
 
 ---
 

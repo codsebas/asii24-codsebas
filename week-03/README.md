@@ -1,9 +1,11 @@
 # ASII-24 - Semana 3
 
-**Estudiante:** Albino Sebastian Rosales Ruano  
-**GitHub:** `codsebas`  
-**Modulo oficial:** Contratos API: OpenAPI/Postman y documentacion tecnica  
+**Estudiante:** Albino Sebastian Rosales Ruano
+**GitHub:** [`codsebas`](https://github.com/codsebas)
+**Modulo oficial:** Contratos API: OpenAPI/Postman y documentacion tecnica
 **Adaptacion academica:** Centro de documentacion y manuales por rol
+**Integracion SHI:** [PR #72 (MERGED)](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/72)
+**Rama en SHI:** `feature/asii-24-semana-03-micro-his-codsebas`
 
 ## Proposito
 
