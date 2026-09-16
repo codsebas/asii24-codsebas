@@ -89,8 +89,8 @@ Todas las entregas individuales se integran progresivamente al repositorio grupa
 | **Semana 1** | `feature/asii-24-contratos-api-openapi-postman-y-documentac-codsebas` | [PR #38](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/38) | 🟢 **MERGED** (`develop`) |
 | **Semana 2** | `feature/asii-24-contratos-api-openapi-postman-y-documentac-codsebas` | [PR #46](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/46) | 🟢 **MERGED** (`develop`) |
 | **Semana 3** | `feature/asii-24-semana-03-micro-his-codsebas` | [PR #72](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/72) | 🟢 **MERGED** (`develop`) |
-| **Semana 4** | `feature/asii-24-semana-04-mvc-repository-codsebas` | [PR #73](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/73) | 🟡 **ABIERTO / EN MERGE** (`develop`) |
-| **Semana 5** | `feature/asii-24-semana-05-openapi-postman-codsebas` | *Pendiente post-merge PR #73* | ⏳ Preparado localmente |
+| **Semana 4** | `feature/asii-24-semana-04-mvc-repository-codsebas` | [PR #73](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/73) | 🟢 **MERGED** (`develop`) |
+| **Semana 5** | `feature/asii-24-semana-05-openapi-postman-codsebas` | *Listo para abrir PR* | ⏳ Listo localmente |
 
 ---
 

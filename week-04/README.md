@@ -5,7 +5,7 @@
 **Módulo Oficial:** Contratos API: OpenAPI/Postman y documentación técnica
 **Adaptación Académica:** Centro de documentación y manuales por rol
 **Repositorio Personal:** [`asii24-codsebas`](https://github.com/codsebas/asii24-codsebas)
-**Integración SHI:** [PR #73 (ABIERTO / EN MERGE)](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/73)
+**Integración SHI:** [PR #73 (MERGED)](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/73)
 **Rama en SHI:** `feature/asii-24-semana-04-mvc-repository-codsebas`
 
 ---
