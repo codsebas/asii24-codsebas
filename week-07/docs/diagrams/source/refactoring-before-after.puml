@@ -1,0 +1,57 @@
+@startuml
+skinparam handwritten false
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Comparación de Refactorización: Antes vs. Después (ASII-24)
+
+package "ANTES (Alto Acoplamiento - Fat Controller)" {
+  class "DocumentController (Fat)" as BeforeCtrl {
+    - pdoConnection : PDO
+    + handleRequest() : void
+    -- Responsabilidades mezcladas --
+    * Parsea JSON crudo de HTTP
+    * Valida esquema OpenAPI directamente
+    * Evalua permisos en array duro en memoria
+    * Ejecuta queries SQL directas
+    * Formatea errores ad-hoc manualmente
+  }
+  note right of BeforeCtrl
+    Acoplamiento eferente Ce = 5
+    Cualquier cambio en OpenAPI,
+    SQL o errores rompe el controlador.
+  end note
+}
+
+package "DESPUÉS (Alta Cohesión - Componentes Desacoplados)" {
+  class "DocumentController (Thin)" as AfterCtrl {
+    - useCase : PublishContractHandler
+    - errorHandler : ProblemDetailsHandler
+    + post() : JsonResponse
+    + get() : JsonResponse
+  }
+
+  class "ContractValidationService" as ValService {
+    + validate(cmd : PublishContractCommand) : void
+  }
+
+  class "RoleAuthorizationGuard" as RBAC {
+    + authorize(doc : Document, role : string) : bool
+  }
+
+  class "ProblemDetailsHandler" as ErrHandler {
+    + render(e : Throwable) : ProblemDetails
+  }
+
+  AfterCtrl --> ValService : delega validacion
+  AfterCtrl --> ErrHandler : delega formato error RFC 7807
+  AfterCtrl ..> RBAC : delega control de rol
+}
+note bottom of AfterCtrl
+  Acoplamiento eferente Ce = 2
+  Controlador delgado enfocado
+  exclusivamente en protocolo HTTP.
+end note
+
+@enduml

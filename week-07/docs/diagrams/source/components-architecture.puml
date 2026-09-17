@@ -1,0 +1,64 @@
+@startuml
+skinparam handwritten false
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Arquitectura de Componentes Frontend y Backend (ASII-24)
+
+package "Frontend Components (SPA / Web & Mobile)" {
+  [ContractViewerWidget] as UI_Viewer
+  [ContractPublishModal] as UI_Publisher
+  [ApiContractClientService] as UI_ClientService
+
+  UI_Viewer --> UI_ClientService : consulta por rol
+  UI_Publisher --> UI_ClientService : envia publicacion
+}
+
+cloud "HTTP REST Gateway / JSON API" as Gateway
+
+UI_ClientService --> Gateway : HTTPS + JWT + X-Tenant-ID
+
+package "Backend Components (ASII-24 Module)" {
+  package "Presentation Component" {
+    [DocumentController] as Controller
+    [ProblemDetailsHandler] as ErrorHandler
+  }
+
+  package "Application Component" {
+    [PublishContractHandler] as UC_Publish
+    [GetContractHandler] as UC_Get
+    [ContractValidationService] as Validator
+
+    interface "PublishContractCommand" as DTO_In
+    interface "ContractDetailResponse" as DTO_Out
+  }
+
+  package "Domain Component" {
+    [DocumentAggregate] as DomainDoc
+    [RoleAuthorizationGuard] as RBACGuard
+  }
+
+  package "Persistence Component" {
+    interface "DocumentRepository" as RepoPort
+    [PdoDocumentRepository] as RepoAdapter
+  }
+}
+
+Gateway --> Controller : enruta peticion
+Controller --> ErrorHandler : captura excepciones y formatea RFC 7807
+Controller --> DTO_In : mapea JSON a DTO inmutable
+Controller --> UC_Publish : ejecuta comando
+Controller --> UC_Get : consulta contrato
+
+UC_Publish --> Validator : valida contrato OpenAPI
+UC_Publish --> DomainDoc : crea entidad
+UC_Get --> RBACGuard : verifica rol autorizado
+
+DomainDoc --> RepoPort : persiste
+RepoPort <|.. RepoAdapter : implementa
+
+UC_Get --> DTO_Out : transforma a DTO de salida
+Controller <-- DTO_Out : retorna JSON estandarizado
+
+@enduml
