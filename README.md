@@ -66,15 +66,25 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 │   └── scripts/run-tests.php           # 6/6 Pruebas de consistencia de contratos
 ├── week-06/                            # Semana 6: Primer Parcial: Defensa y Cambio Práctico
 ├── week-07/                            # Semana 7: Diseño de Componentes y Refactorización
-└── week-08/                            # Semana 8: Diseño de Experiencia de Usuario (UX)
+├── week-08/                            # Semana 8: Diseño de Experiencia de Usuario (UX)
+│   ├── README.md
+│   ├── INFORME.md
+│   ├── DEFENSA_ORAL.md
+│   ├── DECLARACION_IA.md
+│   ├── docs/USER_FLOW_ROLES.md         # User flows por rol (Admin, Médico, Auditor)
+│   ├── docs/WIREFRAMES_ANOTADOS.md     # 5 Wireframes anotados con ciclo de 5 estados
+│   ├── docs/diagrams/source/           # Diagramas PlantUML de actividades y navegación
+│   └── scripts/run-validation.php      # 23/23 Pruebas automatizadas superadas
+└── week-09/                            # Semana 9: Evaluación de Usabilidad y Accesibilidad WCAG
     ├── README.md
     ├── INFORME.md
     ├── DEFENSA_ORAL.md
     ├── DECLARACION_IA.md
-    ├── docs/USER_FLOW_ROLES.md         # User flows por rol (Admin, Médico, Auditor)
-    ├── docs/WIREFRAMES_ANOTADOS.md     # 5 Wireframes anotados con ciclo de 5 estados
-    ├── docs/diagrams/source/           # Diagramas PlantUML de actividades y navegación
-    └── scripts/run-validation.php      # 23/23 Pruebas automatizadas superadas
+    ├── docs/CHECKLIST_USABILIDAD_WCAG.md # Checklist de Nielsen y WCAG 2.1 AA
+    ├── docs/HALLAZGOS_ACCESIBILIDAD.md   # 6 Hallazgos técnicos de accesibilidad
+    ├── docs/BACKLOG_PRIORIZADO.md        # Backlog MoSCoW con criterios Gherkin
+    ├── docs/diagrams/source/             # PlantUML (flujo de foco accesible)
+    └── scripts/run-validation.php        # 40/40 Pruebas automatizadas superadas
 ```
 
 ---
@@ -90,7 +100,8 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 | **Semana 5** | Cliente-Servidor, API REST y Contratos | Contrato OpenAPI 3.0, colección Postman automatizada, ADR frontera de microservicio, seguridad JWT y Tenant. | ✅ **Completo** (Mergeado PR #342 y #346 en SHI - 6/6 tests) |
 | **Semana 6** | Primer Parcial: Defensa Arquitectónica y Cambio Práctico | Presentación de 8 slides, matriz decisión->evidencia, impacto cambio práctico, diagramas y validación E2E. | ✅ **Completo** (Mergeado PR #350 en SHI - 6/6 tests) |
 | **Semana 7** | Diseño de Componentes y Refactorización | Arquitectura de componentes backend/frontend, contratos DTOs, ProblemDetails RFC 7807 y desacoplamiento Ce=2. | ✅ **Completo** (Mergeado PR #353 en SHI - 6/6 tests) |
-| **Semana 8** | Diseño de Experiencia de Usuario (UX) | User flows por rol, 5 wireframes anotados con 5 estados, protección de datos y diagramas de navegación. | ✅ **Completo** (Sometido vía PR #355 en SHI - 23/23 tests) |
+| **Semana 8** | Diseño de Experiencia de Usuario (UX) | User flows por rol, 5 wireframes anotados con 5 estados, protección de datos y diagramas de navegación. | ✅ **Completo** (Mergeado PR #355 en SHI - 23/23 tests) |
+| **Semana 9** | Evaluación de Usabilidad y Accesibilidad | Checklist Nielsen/WCAG 2.1 AA, 6 hallazgos documentados, backlog MoSCoW con criterios Gherkin. | ✅ **Completo** (Sometido vía PR #357 en SHI - 40/40 tests) |
 
 ---
 
@@ -108,7 +119,8 @@ Todas las entregas individuales se integran progresivamente al repositorio grupa
 | **Semana 5 (2/2)** | `feature/asii-24-semana-05-parte-2-adr-diagramas-codsebas` | [PR #346](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/346) | 🟢 **MERGED** (`develop`) |
 | **Semana 6** | `feature/asii-24-semana-06-parcial-defensa-codsebas` | [PR #350](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/350) | 🟢 **MERGED** (`develop`) |
 | **Semana 7** | `feature/asii-24-semana-07-componentes-refactor-codsebas` | [PR #353](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/353) | 🟢 **MERGED** (`develop`) |
-| **Semana 8** | `feature/asii-24-semana-08-diseno-ux-codsebas` | [PR #355](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/355) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
+| **Semana 8** | `feature/asii-24-semana-08-diseno-ux-codsebas` | [PR #355](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/355) | 🟢 **MERGED** (`develop`) |
+| **Semana 9** | `feature/asii-24-semana-09-usabilidad-accesibilidad-codsebas` | [PR #357](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/357) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
 
 ---
 
@@ -122,6 +134,7 @@ Cada semana contiene su propia suite automatizada de pruebas y fuentes editables
 * **Ejecutar pruebas de Semana 6:** `php week-06/scripts/run-validation.php`
 * **Ejecutar pruebas de Semana 7:** `php week-07/scripts/run-tests.php`
 * **Ejecutar pruebas de Semana 8:** `php week-08/scripts/run-validation.php`
+* **Ejecutar pruebas de Semana 9:** `php week-09/scripts/run-validation.php`
 
 ---
 

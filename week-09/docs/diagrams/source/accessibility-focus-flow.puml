@@ -1,0 +1,47 @@
+@startuml accessibility-focus-flow
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+title Flujo de Foco Accesible por Teclado y Contencion en Modal (ASII-24)
+
+actor "Usuario con Teclado / Lector" as User
+participant "Portal / Formulario Principal" as Hub
+participant "Gestor de Foco (A11y Manager)" as FocusMgr
+participant "Modal de Confirmacion SemVer" as Modal
+participant "Lector de Pantalla (ARIA)" as ScreenReader
+
+User -> Hub : Presiona "Publicar Contrato SemVer Major"
+activate Hub
+Hub -> FocusMgr : Registrar elemento detonador (sourceButton)
+activate FocusMgr
+
+Hub -> Modal : Abrir modal accesible (role="dialog", aria-modal="true")
+activate Modal
+Modal -> ScreenReader : Anunciar titulo y descripcion modal (aria-labelledby)
+Modal -> FocusMgr : Activar trampa de foco (Focus Trap)
+FocusMgr -> Modal : Mover foco al primer control interactivo (Input Confirmacion)
+
+loop Navegacion por Tabulador
+  User -> Modal : Presiona tecla "Tab"
+  alt En ultimo elemento interactivo
+    FocusMgr -> Modal : Ciclar foco al primer elemento
+  else En elemento intermedio
+    Modal -> Modal : Desplazar foco al siguiente control
+  end
+end
+
+alt Usuario cancela con tecla Escape
+  User -> Modal : Presiona "Escape"
+  Modal -> FocusMgr : Notificar cierre
+  Modal -> ScreenReader : Anunciar "Dialogo cerrado"
+  deactivate Modal
+  FocusMgr -> Hub : Devolver foco al detonador (sourceButton)
+  deactivate FocusMgr
+  deactivate Hub
+else Usuario confirma accion
+  User -> Modal : Escribe confirmacion y pulsa "Confirmar"
+  Modal -> Hub : Ejecutar publicacion y cerrar modal
+end
+
+@enduml
