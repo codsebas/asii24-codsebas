@@ -1,0 +1,46 @@
+@startuml wireframes-navigation
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+title Navegacion de Vistas y Transicion de Estados UX (ASII-24)
+
+[*] --> WF01_HubPortal : Login con Rol Resuelto
+
+state WF01_HubPortal {
+  [*] --> State_Loading : Solicitando catalogo
+  State_Loading --> State_Success : Catalogo cargado
+  State_Loading --> State_Empty : Sin modulos disponibles
+  State_Loading --> State_Error : Falla de red
+  State_Error --> State_Loading : Click "Reintentar"
+}
+
+WF01_HubPortal --> WF02_Publisher : Rol = Admin
+WF01_HubPortal --> WF03_ClinicalViewer : Rol = Medico / Enfermeria
+WF01_HubPortal --> WF04_ApiSandbox : Rol = Auditor / Integrador
+
+state WF02_Publisher {
+  [*] --> Form_Editing
+  Form_Editing --> WF05_ModalConfirm : Click "Publicar"
+  WF05_ModalConfirm --> Form_Editing : Cancelar / Corregir
+  WF05_ModalConfirm --> Publish_Success : Confirmacion aceptada
+}
+
+state WF03_ClinicalViewer {
+  [*] --> Viewer_Loading
+  Viewer_Loading --> Viewer_Content : Manual encontrado
+  Viewer_Loading --> Viewer_Empty : Busqueda sin coincidencia
+}
+
+state WF04_ApiSandbox {
+  [*] --> Spec_Loaded
+  Spec_Loaded --> Executing_Test : Enviar Request
+  Executing_Test --> Sandbox_Response : Datos anonimizados
+  Executing_Test --> Sandbox_RFC7807 : Error 4xx/5xx mapeado
+}
+
+WF02_Publisher --> WF01_HubPortal : Volver al Hub
+WF03_ClinicalViewer --> WF01_HubPortal : Volver al Hub
+WF04_ApiSandbox --> WF01_HubPortal : Volver al Hub
+
+@enduml

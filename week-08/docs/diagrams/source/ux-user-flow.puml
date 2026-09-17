@@ -1,0 +1,47 @@
+@startuml ux-user-flow
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+title Flujo UX - Publicacion y Consulta de Documentacion por Rol (ASII-24)
+
+start
+:Usuario autenticado ingresa al Portal Hub;
+:Sistema resuelve rol activo (RBAC);
+
+if (¿Rol con privilegios de Publicador?) then (Admin / Publisher)
+  :Accede a Consola de Publicacion;
+  :Carga especificacion OpenAPI o Manual;
+  :Sistema ejecuta validacion de esquema;
+  if (¿Esquema valido?) then (si)
+    :Selecciona version SemVer y roles destino;
+    :Muestra Modal de Confirmacion Critica;
+    if (¿Confirma publicacion?) then (si)
+      :Publica version y actualiza catalogo;
+      :Estado Exito: Notificacion y version visible;
+    else (cancelar)
+      :Mantiene borrador editable;
+    endif
+  else (error)
+    :Estado Error Recuperable;
+    :Resalta lineas con sintaxis invalida;
+    :Permite correccion in-situ;
+  endif
+else (Consulta: Medico / Auditor / Dev)
+  :Accede a Vista de Consulta segun Rol;
+  if (¿Rol Clinico?) then (Medico / Enfermeria)
+    :Consulta Guia Operativa y Manuales Clinicos;
+    :Aplica filtros por servicio y especialidad;
+  else (Auditor / Dev)
+    :Consulta Contratos OpenAPI y Colecciones Postman;
+    :Ejecuta pruebas en Sandbox con datos anonimizados;
+  endif
+  if (¿Existen registros?) then (si)
+    :Estado Exito: Renderizado con ayuda contextual;
+  else (vacio)
+    :Estado Vacio: Sugerencias y contacto de soporte;
+  endif
+endif
+
+stop
+@enduml

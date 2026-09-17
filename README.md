@@ -54,16 +54,27 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 │   ├── database/                       # Esquema relacional
 │   ├── docs/diagrams/source/           # Diagramas PlantUML de capas y repositorio
 │   └── scripts/run-tests.php           # 9/9 Pruebas superadas (InMemory y PDO)
-└── week-05/                            # Semana 5: Cliente-Servidor, OpenAPI 3.0, Postman y ADR
+├── week-05/                            # Semana 5: Cliente-Servidor, OpenAPI 3.0, Postman y ADR
+│   ├── README.md
+│   ├── INFORME.md
+│   ├── DEFENSA_ORAL.md
+│   ├── DECLARACION_IA.md
+│   ├── contracts/openapi.yaml          # Contrato canónico OpenAPI 3.0.3
+│   ├── postman/                        # Colección de pruebas de integración y ambientes
+│   ├── docs/ADR-001-*.md               # Decisión arquitectónica sobre microservicios
+│   ├── docs/diagrams/source/           # Diagramas de secuencia y frontera de microservicio
+│   └── scripts/run-tests.php           # 6/6 Pruebas de consistencia de contratos
+├── week-06/                            # Semana 6: Primer Parcial: Defensa y Cambio Práctico
+├── week-07/                            # Semana 7: Diseño de Componentes y Refactorización
+└── week-08/                            # Semana 8: Diseño de Experiencia de Usuario (UX)
     ├── README.md
     ├── INFORME.md
     ├── DEFENSA_ORAL.md
     ├── DECLARACION_IA.md
-    ├── contracts/openapi.yaml          # Contrato canónico OpenAPI 3.0.3
-    ├── postman/                        # Colección de pruebas de integración y ambientes
-    ├── docs/ADR-001-*.md               # Decisión arquitectónica sobre microservicios
-    ├── docs/diagrams/source/           # Diagramas de secuencia y frontera de microservicio
-    └── scripts/run-tests.php           # 6/6 Pruebas de consistencia de contratos
+    ├── docs/USER_FLOW_ROLES.md         # User flows por rol (Admin, Médico, Auditor)
+    ├── docs/WIREFRAMES_ANOTADOS.md     # 5 Wireframes anotados con ciclo de 5 estados
+    ├── docs/diagrams/source/           # Diagramas PlantUML de actividades y navegación
+    └── scripts/run-validation.php      # 23/23 Pruebas automatizadas superadas
 ```
 
 ---
@@ -78,7 +89,8 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 | **Semana 4** | Arquitectura en Capas y Patrón Repository | MVC con controlador delgado, interfaz `DocumentRepository`, adaptadores InMemory y PDO, análisis de repositorio compartido. | ✅ **Completo** (Integrado vía PR #73 en SHI - 9/9 tests) |
 | **Semana 5** | Cliente-Servidor, API REST y Contratos | Contrato OpenAPI 3.0, colección Postman automatizada, ADR frontera de microservicio, seguridad JWT y Tenant. | ✅ **Completo** (Mergeado PR #342 y #346 en SHI - 6/6 tests) |
 | **Semana 6** | Primer Parcial: Defensa Arquitectónica y Cambio Práctico | Presentación de 8 slides, matriz decisión->evidencia, impacto cambio práctico, diagramas y validación E2E. | ✅ **Completo** (Mergeado PR #350 en SHI - 6/6 tests) |
-| **Semana 7** | Diseño de Componentes y Refactorización | Arquitectura de componentes backend/frontend, contratos DTOs, ProblemDetails RFC 7807 y desacoplamiento Ce=2. | ✅ **Completo** (Sometido vía PR #353 en SHI - 6/6 tests) |
+| **Semana 7** | Diseño de Componentes y Refactorización | Arquitectura de componentes backend/frontend, contratos DTOs, ProblemDetails RFC 7807 y desacoplamiento Ce=2. | ✅ **Completo** (Mergeado PR #353 en SHI - 6/6 tests) |
+| **Semana 8** | Diseño de Experiencia de Usuario (UX) | User flows por rol, 5 wireframes anotados con 5 estados, protección de datos y diagramas de navegación. | ✅ **Completo** (Sometido vía PR #355 en SHI - 23/23 tests) |
 
 ---
 
@@ -95,7 +107,8 @@ Todas las entregas individuales se integran progresivamente al repositorio grupa
 | **Semana 5 (1/2)** | `feature/asii-24-semana-05-parte-1-openapi-postman-codsebas` | [PR #342](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/342) | 🟢 **MERGED** (`develop`) |
 | **Semana 5 (2/2)** | `feature/asii-24-semana-05-parte-2-adr-diagramas-codsebas` | [PR #346](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/346) | 🟢 **MERGED** (`develop`) |
 | **Semana 6** | `feature/asii-24-semana-06-parcial-defensa-codsebas` | [PR #350](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/350) | 🟢 **MERGED** (`develop`) |
-| **Semana 7** | `feature/asii-24-semana-07-componentes-refactor-codsebas` | [PR #353](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/353) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
+| **Semana 7** | `feature/asii-24-semana-07-componentes-refactor-codsebas` | [PR #353](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/353) | 🟢 **MERGED** (`develop`) |
+| **Semana 8** | `feature/asii-24-semana-08-diseno-ux-codsebas` | [PR #355](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/355) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
 
 ---
 
@@ -108,11 +121,12 @@ Cada semana contiene su propia suite automatizada de pruebas y fuentes editables
 * **Ejecutar pruebas de Semana 5:** `php week-05/scripts/run-tests.php`
 * **Ejecutar pruebas de Semana 6:** `php week-06/scripts/run-validation.php`
 * **Ejecutar pruebas de Semana 7:** `php week-07/scripts/run-tests.php`
+* **Ejecutar pruebas de Semana 8:** `php week-08/scripts/run-validation.php`
 
 ---
 
 ## Autoría y Responsabilidad
 
-**Albino Sebastián Rosales Ruano**  
-Estudiante de Ingeniería en Sistemas — Universidad Mariano Gálvez de Guatemala  
+**Albino Sebastián Rosales Ruano**
+Estudiante de Ingeniería en Sistemas — Universidad Mariano Gálvez de Guatemala
 GitHub: [`codsebas`](https://github.com/codsebas)
