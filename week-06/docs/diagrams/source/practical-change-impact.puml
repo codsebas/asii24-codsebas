@@ -1,0 +1,36 @@
+@startuml
+skinparam handwritten false
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Impacto del Cambio Práctico: Ciclo de Vida y Rol Auditor (ASII-24)
+
+state "Ciclo de Vida Documental" as Lifecycle {
+  [*] --> DRAFT : 1. Creación técnica (Admin)
+  DRAFT --> PUBLISHED : 2. Aprobación y publicación
+  PUBLISHED --> DEPRECATED : 3. Reemplazo por nueva versión
+  DEPRECATED --> [*]
+}
+
+package "Matriz de Acceso por Rol ante el Cambio" {
+  [Admin] --> DRAFT : Lectura y Edición
+  [Admin] --> PUBLISHED : Lectura y Gestión
+  [Admin] --> DEPRECATED : Consulta histórica
+
+  [Roles Clínicos\n(Médico, Enfermera, Lab)] --> PUBLISHED : Solo lectura autorizada
+  [Roles Clínicos\n(Médico, Enfermera, Lab)] ..> DRAFT : 403 Forbidden
+  [Roles Clínicos\n(Médico, Enfermera, Lab)] ..> DEPRECATED : Warning Header RFC 8594
+
+  [AuditorExterno\n(Nuevo Rol)] --> PUBLISHED : Solo lectura (Inspección)
+  [AuditorExterno\n(Nuevo Rol)] --> DEPRECATED : Solo lectura (Forense)
+  [AuditorExterno\n(Nuevo Rol)] ..> DRAFT : 403 Forbidden
+}
+
+note bottom of [AuditorExterno\n(Nuevo Rol)]
+  El rol AuditorExterno tiene
+  bloqueado cualquier endpoint de mutación
+  (POST / PUT / DELETE -> 403 Forbidden).
+end note
+
+@enduml

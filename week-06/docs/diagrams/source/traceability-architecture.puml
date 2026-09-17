@@ -1,0 +1,52 @@
+@startuml
+skinparam handwritten false
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Trazabilidad Arquitectónica End-to-End (ASII-24)
+
+actor "Actor Clínico / Admin\n(Médico, Admin, Auditor)" as Actor
+
+package "Capa de Presentación (HTTP / MVC)" {
+  [DocumentController] as Controller
+  [OpenAPI 3.0.3 Contract\n(/api/v1/api-contracts)] as OpenAPI
+}
+
+package "Capa de Aplicación (Casos de Uso)" {
+  [PublishDocument] as UC_Publish
+  [GetDocumentById] as UC_Get
+  [ListDocumentsByRole] as UC_List
+}
+
+package "Capa de Dominio (Reglas e Invariantes)" {
+  entity "Document\n(Entity)" as Entity_Doc
+  enum "OwnerScope\n(CENTRAL / HOSPITAL)" as Enum_Scope
+  enum "DocumentStatus\n(DRAFT / PUBLISHED / DEPRECATED)" as Enum_Status
+}
+
+package "Capa de Infraestructura (Persistencia)" {
+  interface "DocumentRepository\n(Port Interface)" as Repo_Interface
+  [PdoDocumentRepository\n(SQLite / PostgreSQL Adapter)] as Repo_Pdo
+  [InMemoryDocumentRepository\n(Testing Adapter)] as Repo_Memory
+  database "Base de Datos Relacional\n(documents table)" as DB
+}
+
+Actor --> OpenAPI : 1. Solicita operacion REST
+OpenAPI --> Controller : 2. Enruta peticion validada
+Controller --> UC_Publish : 3a. Ejecuta publicacion
+Controller --> UC_Get : 3b. Consulta por ID y Rol
+
+UC_Publish --> Entity_Doc : 4a. Valida reglas de negocio
+UC_Get --> Entity_Doc : 4b. Valida visibilidad de rol
+Entity_Doc ..> Enum_Scope : usa
+Entity_Doc ..> Enum_Status : usa
+
+UC_Publish --> Repo_Interface : 5a. Persiste documento
+UC_Get --> Repo_Interface : 5b. Recupera entidad
+
+Repo_Interface <|.. Repo_Pdo : implementa
+Repo_Interface <|.. Repo_Memory : implementa
+Repo_Pdo --> DB : 6. Sentencias preparadas PDO
+
+@enduml

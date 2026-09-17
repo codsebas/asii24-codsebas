@@ -76,7 +76,8 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 | **Semana 2** | Principios SOLID y Requerimientos | `RF-01` a `RF-10`, `RNF-01` a `RNF-08`, Criterios Dado/Cuando/Entonces, SOLID DIP. | ✅ **Completo** (Mergeado PR #46 en SHI) |
 | **Semana 3** | Arquitectura y Micro-Monolito Vanilla | Micro-HIS en PHP 8.2+ vanilla, 4 capas, PDO con sentencias preparadas, tests. | ✅ **Completo** (Mergeado PR #72 en SHI - 6/6 tests) |
 | **Semana 4** | Arquitectura en Capas y Patrón Repository | MVC con controlador delgado, interfaz `DocumentRepository`, adaptadores InMemory y PDO, análisis de repositorio compartido. | ✅ **Completo** (Integrado vía PR #73 en SHI - 9/9 tests) |
-| **Semana 5** | Cliente-Servidor, API REST y Contratos | Contrato OpenAPI 3.0, colección Postman automatizada, ADR frontera de microservicio, seguridad JWT y Tenant. | ✅ **Completo** (6/6 tests pasando) |
+| **Semana 5** | Cliente-Servidor, API REST y Contratos | Contrato OpenAPI 3.0, colección Postman automatizada, ADR frontera de microservicio, seguridad JWT y Tenant. | ✅ **Completo** (Mergeado PR #342 y #346 en SHI - 6/6 tests) |
+| **Semana 6** | Primer Parcial: Defensa Arquitectónica y Cambio Práctico | Presentación de 8 slides, matriz decisión->evidencia, impacto cambio práctico, diagramas y validación E2E. | ✅ **Completo** (Sometido vía PR #350 en SHI - 6/6 tests) |
 
 ---
 
@@ -90,7 +91,9 @@ Todas las entregas individuales se integran progresivamente al repositorio grupa
 | **Semana 2** | `feature/asii-24-contratos-api-openapi-postman-y-documentac-codsebas` | [PR #46](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/46) | 🟢 **MERGED** (`develop`) |
 | **Semana 3** | `feature/asii-24-semana-03-micro-his-codsebas` | [PR #72](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/72) | 🟢 **MERGED** (`develop`) |
 | **Semana 4** | `feature/asii-24-semana-04-mvc-repository-codsebas` | [PR #73](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/73) | 🟢 **MERGED** (`develop`) |
-| **Semana 5** | `feature/asii-24-semana-05-openapi-postman-codsebas` | *Listo para abrir PR* | ⏳ Listo localmente |
+| **Semana 5 (1/2)** | `feature/asii-24-semana-05-parte-1-openapi-postman-codsebas` | [PR #342](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/342) | 🟢 **MERGED** (`develop`) |
+| **Semana 5 (2/2)** | `feature/asii-24-semana-05-parte-2-adr-diagramas-codsebas` | [PR #346](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/346) | 🟢 **MERGED** (`develop`) |
+| **Semana 6** | `feature/asii-24-semana-06-parcial-defensa-codsebas` | [PR #350](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/350) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
 
 ---
 
@@ -101,6 +104,7 @@ Cada semana contiene su propia suite automatizada de pruebas y fuentes editables
 * **Ejecutar pruebas de Semana 3:** `php week-03/scripts/run-tests.php`
 * **Ejecutar pruebas de Semana 4:** `php week-04/scripts/run-tests.php`
 * **Ejecutar pruebas de Semana 5:** `php week-05/scripts/run-tests.php`
+* **Ejecutar pruebas de Semana 6:** `php week-06/scripts/run-validation.php`
 
 ---
 
