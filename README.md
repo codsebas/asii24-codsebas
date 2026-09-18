@@ -122,8 +122,8 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 | **Semana 7** | Diseño de Componentes y Refactorización | Arquitectura de componentes backend/frontend, contratos DTOs, ProblemDetails RFC 7807 y desacoplamiento Ce=2. | ✅ **Completo** (Mergeado PR #353 en SHI - 6/6 tests) |
 | **Semana 8** | Diseño de Experiencia de Usuario (UX) | User flows por rol, 5 wireframes anotados con 5 estados, protección de datos y diagramas de navegación. | ✅ **Completo** (Mergeado PR #355 en SHI - 23/23 tests) |
 | **Semana 9** | Evaluación de Usabilidad y Accesibilidad | Checklist Nielsen/WCAG 2.1 AA, 6 hallazgos documentados, backlog MoSCoW con criterios Gherkin. | ✅ **Completo** (Mergeado PR #357 en SHI - 40/40 tests) |
-| **Semana 10** | Diseño para Movilidad en Salud | Adaptación 320–430px, 4 pantallas táctiles, touch targets $\ge 48\text{px}$, resiliencia offline. | ✅ **Completo** (Sometido vía PR #488 en SHI - 25/25 tests) |
-| **Semana 11** | Prototipo Navegable Móvil/Web | SPA interactiva autónoma, Happy Path (HTTP 200), Error Crítico RFC 7807 (HTTP 422), offline cache y responsive. | ✅ **Completo** (Validado localmente - 26/26 tests) |
+| **Semana 10** | Diseño para Movilidad en Salud | Adaptación 320–430px, 4 pantallas táctiles, touch targets $\ge 48\text{px}$, resiliencia offline. | ✅ **Completo** (Mergeado PR #488 en SHI - 25/25 tests) |
+| **Semana 11** | Prototipo Navegable Móvil/Web | SPA interactiva autónoma, Happy Path (HTTP 200), Error Crítico RFC 7807 (HTTP 422), offline cache y responsive. | ✅ **Completo** (Sometido vía PR #490 en SHI - 26/26 tests) |
 
 ---
 
@@ -143,8 +143,8 @@ Todas las entregas individuales se integran progresivamente al repositorio grupa
 | **Semana 7** | `feature/asii-24-semana-07-componentes-refactor-codsebas` | [PR #353](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/353) | 🟢 **MERGED** (`develop`) |
 | **Semana 8** | `feature/asii-24-semana-08-diseno-ux-codsebas` | [PR #355](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/355) | 🟢 **MERGED** (`develop`) |
 | **Semana 9** | `feature/asii-24-semana-09-usabilidad-accesibilidad-codsebas` | [PR #357](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/357) | 🟢 **MERGED** (`develop`) |
-| **Semana 10** | `feature/asii-24-semana-10-movilidad-codsebas` | [PR #488](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/488) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
-| **Semana 11** | `feature/asii-24-semana-11-prototipo-codsebas` | *Pendiente apertura post-merge PR #488* | 🔵 **LOCAL / VALIDADO** |
+| **Semana 10** | `feature/asii-24-semana-10-movilidad-codsebas` | [PR #488](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/488) | 🟢 **MERGED** (`develop`) |
+| **Semana 11** | `feature/asii-24-semana-11-prototipo-codsebas` | [PR #490](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/490) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
 
 ---
 
