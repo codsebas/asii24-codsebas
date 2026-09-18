@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHI-2026 | Centro de Documentación y Manuales por Rol (ASII-24)</title>
+  <style>
+    :root {
+      --primary: #0b4a6f; --primary-hover: #08334e; --bg: #f8fafc; --surface: #ffffff;
+      --border: #cbd5e1; --text: #1e293b; --text-muted: #64748b; --success: #16a34a;
+      --danger: #dc2626; --warning: #d97706; --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.5; padding-bottom: 70px; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px; position: sticky; top: 0; z-index: 100; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .logo { font-weight: 700; font-size: 1rem; color: var(--primary); display: flex; align-items: center; gap: 6px; }
+    .status-pill { font-size: 0.75rem; padding: 4px 8px; border-radius: 999px; font-weight: 600; }
+    .status-online { background: #dcfce7; color: var(--success); }
+    .status-offline { background: #fef3c7; color: var(--warning); }
+    .role-bar { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 0.85rem; }
+    select, input, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.95rem; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); }
+    .nav-tabs { display: flex; gap: 8px; margin-top: 8px; border-bottom: 1px solid var(--border); }
+    .nav-tab { padding: 8px 12px; border: none; background: transparent; cursor: pointer; font-weight: 600; color: var(--text-muted); border-bottom: 3px solid transparent; min-height: 48px; }
+    .nav-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    main { max-width: 900px; margin: 16px auto; padding: 0 16px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 10px 16px; border-radius: var(--radius); border: none; font-weight: 600; cursor: pointer; font-size: 0.95rem; text-decoration: none; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-secondary { background: #e2e8f0; color: var(--text); }
+    .badge-method { background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.8rem; font-family: monospace; }
+    .code-box { background: #0f172a; color: #f8fafc; padding: 12px; border-radius: var(--radius); font-family: monospace; font-size: 0.85rem; overflow-x: auto; white-space: pre-wrap; margin-top: 8px; }
+    .bottom-sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; justify-content: center; z-index: 200; }
+    .bottom-sheet { background: var(--surface); width: 100%; max-width: 500px; border-radius: 16px 16px 0 0; padding: 20px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15); }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; height: 56px; z-index: 100; }
+    .bottom-nav button { flex: 1; border: none; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; }
+    .bottom-nav button.active { color: var(--primary); font-weight: 700; }
+    @media (min-width: 769px) { .bottom-nav { display: none; } body { padding-bottom: 20px; } }
+    .alert-box { padding: 12px; border-radius: var(--radius); margin: 8px 0; font-size: 0.9rem; }
+    .alert-danger { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+    .alert-warning { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <div class="logo">🏥 SHI-2026 Docs & Manuales</div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <span id="netStatus" class="status-pill status-online">● ONLINE</span>
+        <button class="btn btn-secondary" style="min-height:36px; padding:4px 8px; font-size:0.75rem;" onclick="toggleNetwork()">Simular Red</button>
+      </div>
+    </div>
+    <div class="role-bar">
+      <label for="roleSelector" style="font-weight:600;">Rol Activo:</label>
+      <select id="roleSelector" onchange="changeRole(this.value)" style="max-width:240px; min-height:40px;">
+        <option value="ROLE_MEDICO">Médico Especialista</option>
+        <option value="ROLE_ENFERMERA">Enfermería</option>
+        <option value="ROLE_AUDITOR">Auditor / Desarrollador</option>
+        <option value="ROLE_ADMIN">Administrador / Publisher</option>
+      </select>
+    </div>
+    <nav class="nav-tabs" role="tablist">
+      <button class="nav-tab active" id="tabManuals" onclick="showView('manuals')">📚 Manuales Clínicos</button>
+      <button class="nav-tab" id="tabApi" onclick="showView('api')">🔌 API Explorer & Sandbox</button>
+      <button class="nav-tab" id="tabPublish" onclick="showView('publish')">🚀 Publicador SemVer</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- VISTA 1: MANUALES CLINICOS -->
+    <section id="viewManuals">
+      <div class="card">
+        <h2 style="font-size:1.15rem; margin-bottom:8px;">Buscador Contextual de Protocolos</h2>
+        <input type="search" id="manualSearch" placeholder="Buscar 'triage', 'sedación', 'medicamentos'..." oninput="filterManuals(this.value)" style="margin-bottom:8px;">
+        <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:4px;">
+          <button class="btn btn-secondary" style="min-height:36px; font-size:0.8rem;" onclick="filterTag('todos')">Todos</button>
+          <button class="btn btn-secondary" style="min-height:36px; font-size:0.8rem;" onclick="filterTag('urgencias')">Urgencias</button>
+          <button class="btn btn-secondary" style="min-height:36px; font-size:0.8rem;" onclick="filterTag('farmacia')">Farmacia</button>
+        </div>
+      </div>
+      <div id="manualsList">
+        <div class="card" data-tags="urgencias triage">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <h3 style="font-size:1rem; color:var(--primary);">Protocolo: Triage y Urgencias Críticas</h3>
+              <p style="font-size:0.85rem; color:var(--text-muted);">Rol: Médico / Enf. • Ver. 2.4.0 (Vigente)</p>
+            </div>
+            <span class="status-pill status-online">✓ Offline OK</span>
+          </div>
+          <div class="alert-box alert-warning" style="margin-top:8px;">⚠️ ALERTA: Verifique escala de Glasgow antes de sedación.</div>
+          <button class="btn btn-primary" style="margin-top:8px; width:100%;" onclick="openManualDetail()">Ver Procedimiento Completo</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISTA 2: API EXPLORER & SANDBOX -->
+    <section id="viewApi" style="display:none;">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h2>Catálogo de Contratos OpenAPI 3.0</h2>
+          <span class="badge-method">SANDBOX V2.1</span>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Pruebas seguras intermodulares con datos sintéticos.</p>
+        <div style="margin-bottom:12px;">
+          <label style="font-weight:600; font-size:0.85rem;">Endpoint:</label>
+          <select id="endpointSelect" style="margin-top:4px;">
+            <option value="GET_CONTRACTS">GET /api/v1/contracts (Listar Contratos)</option>
+            <option value="POST_CONTRACTS">POST /api/v1/contracts (Publicar DTO)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="width:100%;" onclick="executeSandboxTest()">⚡ Probar Endpoint (Try It Out)</button>
+        <div id="apiResult" aria-live="polite" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <!-- VISTA 3: PUBLICADOR SEMVER -->
+    <section id="viewPublish" style="display:none;">
+      <div class="card">
+        <h2>Publicador de Versiones OpenAPI (Admin)</h2>
+        <div style="margin:12px 0;">
+          <label style="font-weight:600; font-size:0.85rem;">Incremento SemVer:</label>
+          <select id="semverSelect" style="margin-top:4px;">
+            <option value="PATCH">Patch (v2.0.1 - Corrección menor)</option>
+            <option value="MINOR">Minor (v2.1.0 - Funcionalidad compatible)</option>
+            <option value="MAJOR">Major (v3.0.0 - Ruptura / Breaking Change)</option>
+          </select>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="font-weight:600; font-size:0.85rem;">Changelog Técnico:</label>
+          <textarea id="changelogInput" rows="3">Adición de ProblemDetails RFC 7807 y validación de DTOs.</textarea>
+        </div>
+        <button class="btn btn-danger" style="width:100%;" onclick="attemptPublish()">🚀 Validar y Publicar Contrato</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL / BOTTOM SHEET DE ERROR CRITICO RFC 7807 -->
+  <div id="modalSheet" class="bottom-sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="bottom-sheet">
+      <h3 id="modalTitle" style="color:var(--danger); font-size:1.1rem; margin-bottom:8px;">🛑 Error de Validación RFC 7807 (HTTP 422)</h3>
+      <div id="modalBody" class="alert-box alert-danger"></div>
+      <div style="margin:12px 0;">
+        <label for="confirmInput" style="font-size:0.85rem; font-weight:600;">Escriba "CONFIRMAR-V3.0.0" para desbloquear:</label>
+        <input type="text" id="confirmInput" aria-invalid="true" style="margin-top:4px;">
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-secondary" style="flex:1;" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-danger" style="flex:1;" onclick="confirmRecovery()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVEGACION INFERIOR MOVIL -->
+  <nav class="bottom-nav" aria-label="Navegación Móvil">
+    <button class="active" id="bNavManuals" onclick="showView('manuals')"><span>📚</span><span>Manuales</span></button>
+    <button id="bNavApi" onclick="showView('api')"><span>🔌</span><span>Sandbox</span></button>
+    <button id="bNavPublish" onclick="showView('publish')"><span>🚀</span><span>Publicar</span></button>
+  </nav>
+
+  <script>
+    let isOnline = true;
+    function toggleNetwork() {
+      isOnline = !isOnline;
+      const el = document.getElementById('netStatus');
+      el.className = 'status-pill ' + (isOnline ? 'status-online' : 'status-offline');
+      el.textContent = isOnline ? '● ONLINE' : '▲ MODO OFFLINE';
+    }
+    function changeRole(role) {
+      if (role === 'ROLE_ADMIN') { showView('publish'); }
+      else if (role === 'ROLE_AUDITOR') { showView('api'); }
+      else { showView('manuals'); }
+    }
+    function showView(view) {
+      document.getElementById('viewManuals').style.display = (view === 'manuals') ? 'block' : 'none';
+      document.getElementById('viewApi').style.display = (view === 'api') ? 'block' : 'none';
+      document.getElementById('viewPublish').style.display = (view === 'publish') ? 'block' : 'none';
+      document.querySelectorAll('.nav-tab, .bottom-nav button').forEach(b => b.classList.remove('active'));
+      if (view === 'manuals') { document.getElementById('tabManuals').classList.add('active'); document.getElementById('bNavManuals').classList.add('active'); }
+      if (view === 'api') { document.getElementById('tabApi').classList.add('active'); document.getElementById('bNavApi').classList.add('active'); }
+      if (view === 'publish') { document.getElementById('tabPublish').classList.add('active'); document.getElementById('bNavPublish').classList.add('active'); }
+    }
+    function filterManuals(val) {
+      const q = val.toLowerCase();
+      document.querySelectorAll('#manualsList .card').forEach(c => {
+        c.style.display = c.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+      });
+    }
+    function filterTag(t) {
+      document.querySelectorAll('#manualsList .card').forEach(c => {
+        c.style.display = (t === 'todos' || c.dataset.tags.includes(t)) ? 'block' : 'none';
+      });
+    }
+    function openManualDetail() {
+      alert("Procedimiento cargado exitosamente (" + (isOnline ? "Servidor Central" : "Caché Local Offline") + ")");
+    }
+    function executeSandboxTest() {
+      const res = document.getElementById('apiResult');
+      res.innerHTML = '<div class="alert-box alert-warning">⏳ Ejecutando simulación en Sandbox...</div>';
+      setTimeout(() => {
+        if (!isOnline) {
+          res.innerHTML = '<div class="alert-box alert-danger">⚠️ HTTP 504 Gateway Timeout (RFC 7807)<br>Sin conexión de red hospitalaria. <button class="btn btn-secondary" style="min-height:36px; margin-top:6px;" onclick="executeSandboxTest()">Reintentar con Backoff</button></div>';
+          return;
+        }
+        res.innerHTML = '<div class="alert-box alert-warning" style="background:#ecfdf5; color:#065f46; border-color:#6ee7b7;">✅ HTTP 200 OK (ContractDetailResponse DTO)</div>' +
+          '<div class="code-box">{\n  "contract_id": "CTR-SYNTH-9941",\n  "title": "Protocolo Triage y Urgencias",\n  "version": "v2.4.0",\n  "auth_token": "Bearer eyJhbGci...***",\n  "patient_ref": "PAC-SYNTH-REDACTED",\n  "status": "ACTIVE"\n}</div>' +
+          '<button class="btn btn-secondary" style="width:100%; margin-top:8px;" onclick="navigator.clipboard.writeText(\'curl -X GET https://api.shi.umg.edu.gt/v1/contracts -H \\\'Authorization: Bearer token\\\'\'); alert(\'cURL copiado al portapapeles!\')">📋 Copiar Comando cURL</button>';
+      }, 400);
+    }
+    function attemptPublish() {
+      const semver = document.getElementById('semverSelect').value;
+      if (semver === 'MAJOR') {
+        const body = document.getElementById('modalBody');
+        body.innerHTML = '<strong>Alerta de Seguridad RFC 7807:</strong><br>Ha seleccionado incremento <em>MAJOR (v3.0.0)</em>. Este cambio rompe compatibilidad con los módulos 13 y 15. Debe escribir la confirmación de seguridad para proceder.';
+        document.getElementById('confirmInput').value = '';
+        document.getElementById('confirmInput').setAttribute('aria-invalid', 'true');
+        document.getElementById('modalSheet').style.display = 'flex';
+        document.getElementById('confirmInput').focus();
+      } else {
+        alert("Contrato publicado con éxito (SemVer " + semver + ")");
+      }
+    }
+    function closeModal() { document.getElementById('modalSheet').style.display = 'none'; }
+    function confirmRecovery() {
+      const val = document.getElementById('confirmInput').value.trim();
+      if (val === 'CONFIRMAR-V3.0.0') {
+        closeModal();
+        alert("✅ Verificación exitosa. Contrato SemVer Major v3.0.0 publicado.");
+      } else {
+        alert("❌ Error 422: Cadena de confirmación incorrecta.");
+        document.getElementById('confirmInput').focus();
+      }
+    }
+  </script>
+</body>
+</html>

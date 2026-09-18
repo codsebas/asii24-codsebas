@@ -1,0 +1,37 @@
+@startuml prototype-navigation
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+title Grafo de Navegacion del Prototipo Interactivo (ASII-24)
+
+[*] --> HubGeneral : Inicializacion (Rol = Medico)
+
+state HubGeneral {
+  [*] --> VistaManuales
+  VistaManuales --> LectorClinico : Click "Ver Procedimiento"
+  LectorClinico --> VistaManuales : Cerrar Lector
+}
+
+HubGeneral --> APIExplorer : Switch Tab / Bottom Nav [ APIs ]
+HubGeneral --> Publicador : Switch Tab / Bottom Nav [ Publicar ]
+
+state APIExplorer {
+  [*] --> InspectorEndpoints
+  InspectorEndpoints --> EjecutarPeticion : Click "Try It Out"
+  EjecutarPeticion --> Respuesta_200_OK : Red = Online (Happy Path)
+  EjecutarPeticion --> Respuesta_504_Timeout : Red = Offline (Falla de Red)
+  Respuesta_504_Timeout --> EjecutarPeticion : Click "Reintentar con Backoff"
+}
+
+state Publicador {
+  [*] --> FormularioSemVer
+  FormularioSemVer --> ModalConfirmacion422 : Publicar con SemVer = MAJOR
+  ModalConfirmacion422 --> FormularioSemVer : Cancelar
+  ModalConfirmacion422 --> PublicacionExitosa : Validacion "CONFIRMAR-V3.0.0" OK
+}
+
+APIExplorer --> HubGeneral : Volver
+Publicador --> HubGeneral : Volver
+
+@enduml
