@@ -1,0 +1,45 @@
+@startuml mobile-navigation-flow
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+title Arquitectura de Navegacion Movil y Transicion Online/Offline (ASII-24)
+
+[*] --> PM01_HubMovil : Apertura en Smartphone (320-430px)
+
+state PM01_HubMovil {
+  [*] --> ResolviendoRed
+  ResolviendoRed --> Estado_Online : Red estable disponible
+  ResolviendoRed --> Estado_Offline : Sin conexion / Celular debil
+}
+
+PM01_HubMovil --> PM02_LectorProtocolos : Selecciona Manual Clinico
+PM01_HubMovil --> PM03_SandboxCompacto : Selecciona Explorador de APIs
+PM01_HubMovil --> PM04_BottomSheet : Accion Destructiva / SemVer Major
+
+state PM02_LectorProtocolos {
+  [*] --> CargarContenido
+  CargarContenido --> Render_Network : Obtener de Servidor
+  CargarContenido --> Render_Cache : Obtener de Service Worker
+  Render_Cache --> Lectura_Offline : Mostrar badge [ MODO OFFLINE ]
+}
+
+state PM03_SandboxCompacto {
+  [*] --> Inspector_Compacto
+  Inspector_Compacto --> Ejecutar_Test : Click "Probar Endpoint"
+  Ejecutar_Test --> Respuesta_Exitosa : HTTP 200 con payload truncado
+  Ejecutar_Test --> Fallo_Timeout : HTTP 504 con RFC 7807
+  Fallo_Timeout --> Reintento_Backoff : Click "Reintentar"
+}
+
+state PM04_BottomSheet {
+  [*] --> Despliegue_Inferior : Emerge en Thumb Zone (48px)
+  Despliegue_Inferior --> Cancelado : Click "Cancelar"
+  Despliegue_Inferior --> Confirmado : Input validado + Click "Confirmar"
+}
+
+PM02_LectorProtocolos --> PM01_HubMovil : Click [< Volver] o Bottom Bar
+PM03_SandboxCompacto --> PM01_HubMovil : Bottom Bar [ Inicio ]
+PM04_BottomSheet --> PM01_HubMovil : Cierre o confirmacion
+
+@enduml
