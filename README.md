@@ -111,8 +111,8 @@ Este repositorio concentra y preserva de forma evolutiva los artefactos de dise�
 | **Semana 6** | Primer Parcial: Defensa Arquitectónica y Cambio Práctico | Presentación de 8 slides, matriz decisión->evidencia, impacto cambio práctico, diagramas y validación E2E. | ✅ **Completo** (Mergeado PR #350 en SHI - 6/6 tests) |
 | **Semana 7** | Diseño de Componentes y Refactorización | Arquitectura de componentes backend/frontend, contratos DTOs, ProblemDetails RFC 7807 y desacoplamiento Ce=2. | ✅ **Completo** (Mergeado PR #353 en SHI - 6/6 tests) |
 | **Semana 8** | Diseño de Experiencia de Usuario (UX) | User flows por rol, 5 wireframes anotados con 5 estados, protección de datos y diagramas de navegación. | ✅ **Completo** (Mergeado PR #355 en SHI - 23/23 tests) |
-| **Semana 9** | Evaluación de Usabilidad y Accesibilidad | Checklist Nielsen/WCAG 2.1 AA, 6 hallazgos documentados, backlog MoSCoW con criterios Gherkin. | ✅ **Completo** (Sometido vía PR #357 en SHI - 40/40 tests) |
-| **Semana 10** | Diseño para Movilidad en Salud | Adaptación 320–430px, 4 pantallas táctiles, touch targets $\ge 48\text{px}$, resiliencia offline. | ✅ **Completo** (Validado localmente - 25/25 tests) |
+| **Semana 9** | Evaluación de Usabilidad y Accesibilidad | Checklist Nielsen/WCAG 2.1 AA, 6 hallazgos documentados, backlog MoSCoW con criterios Gherkin. | ✅ **Completo** (Mergeado PR #357 en SHI - 40/40 tests) |
+| **Semana 10** | Diseño para Movilidad en Salud | Adaptación 320–430px, 4 pantallas táctiles, touch targets $\ge 48\text{px}$, resiliencia offline. | ✅ **Completo** (Sometido vía PR #488 en SHI - 25/25 tests) |
 
 ---
 
@@ -131,8 +131,8 @@ Todas las entregas individuales se integran progresivamente al repositorio grupa
 | **Semana 6** | `feature/asii-24-semana-06-parcial-defensa-codsebas` | [PR #350](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/350) | 🟢 **MERGED** (`develop`) |
 | **Semana 7** | `feature/asii-24-semana-07-componentes-refactor-codsebas` | [PR #353](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/353) | 🟢 **MERGED** (`develop`) |
 | **Semana 8** | `feature/asii-24-semana-08-diseno-ux-codsebas` | [PR #355](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/355) | 🟢 **MERGED** (`develop`) |
-| **Semana 9** | `feature/asii-24-semana-09-usabilidad-accesibilidad-codsebas` | [PR #357](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/357) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
-| **Semana 10** | `feature/asii-24-semana-10-movilidad-codsebas` | *Pendiente apertura post-aclaración Odoo* | 🔵 **LOCAL / VALIDADO** |
+| **Semana 9** | `feature/asii-24-semana-09-usabilidad-accesibilidad-codsebas` | [PR #357](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/357) | 🟢 **MERGED** (`develop`) |
+| **Semana 10** | `feature/asii-24-semana-10-movilidad-codsebas` | [PR #488](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/488) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
 
 ---
 
