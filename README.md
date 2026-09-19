@@ -144,7 +144,7 @@ Todas las entregas individuales se integran progresivamente al repositorio grupa
 | **Semana 8** | `feature/asii-24-semana-08-diseno-ux-codsebas` | [PR #355](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/355) | 🟢 **MERGED** (`develop`) |
 | **Semana 9** | `feature/asii-24-semana-09-usabilidad-accesibilidad-codsebas` | [PR #357](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/357) | 🟢 **MERGED** (`develop`) |
 | **Semana 10** | `feature/asii-24-semana-10-movilidad-codsebas` | [PR #488](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/488) | 🟢 **MERGED** (`develop`) |
-| **Semana 11** | `feature/asii-24-semana-11-prototipo-codsebas` | [PR #490](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/490) | 🟡 **ABIERTO / EN REVISIÓN** (`develop`) |
+| **Semana 11** | `feature/asii-24-semana-11-prototipo-codsebas` | [PR #490](https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/pull/490) | 🟢 **MERGED** (`develop`) |
 
 ---
 
